@@ -34,6 +34,7 @@ public class FormScanner {
 	 */
 	public static void main(String[] args) {
 		{
+
 			Locale locale = Locale.getDefault();
 			FormFileUtils fileUtils = FormFileUtils.getInstance(locale);
 
