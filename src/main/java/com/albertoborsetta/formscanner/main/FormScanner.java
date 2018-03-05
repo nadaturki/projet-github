@@ -1,6 +1,5 @@
 package com.albertoborsetta.formscanner.main;
 
-import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,12 +11,10 @@ import java.util.Iterator;
 import java.util.Locale;
 
 import javax.imageio.ImageIO;
-import javax.swing.UIManager;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -25,15 +22,6 @@ import com.albertoborsetta.formscanner.api.FormTemplate;
 import com.albertoborsetta.formscanner.api.exceptions.FormScannerException;
 import com.albertoborsetta.formscanner.commons.FormFileUtils;
 import com.albertoborsetta.formscanner.commons.FormScannerConstants;
-import com.albertoborsetta.formscanner.gui.FormScannerDesktop;
-import com.albertoborsetta.formscanner.model.FormScannerModel;
-
-import java.io.UnsupportedEncodingException;
-
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import ch.randelshofer.quaqua.QuaquaLookAndFeel;
 
 public class FormScanner {
 
@@ -49,19 +37,19 @@ public class FormScanner {
 			Locale locale = Locale.getDefault();
 			FormFileUtils fileUtils = FormFileUtils.getInstance(locale);
 
-			File templateFile = new File(args[0]);
+			File templateFile = new File("D:\\pfe\\eclipse\\img\\14.xtmpl");
 			FormTemplate template = null;
 			try {
 				template = new FormTemplate(templateFile);
 				if (!FormScannerConstants.CURRENT_TEMPLATE_VERSION.equals(template.getVersion())) {
-					fileUtils.saveToFile(FilenameUtils.getFullPath(args[0]), template, false);
+					fileUtils.saveToFile(FilenameUtils.getFullPath("D:\\pfe\\eclipse\\img\\14.xtmpl"), template, false);
 				}
 			} catch (ParserConfigurationException | SAXException | IOException e) {
 				logger.debug("Error", e);
 				System.exit(-1);
 			}
 			String[] extensions = ImageIO.getReaderFileSuffixes();
-			Iterator<?> fileIterator = FileUtils.iterateFiles(new File(args[1]), extensions, false);
+			Iterator<?> fileIterator = FileUtils.iterateFiles(new File("D:\\pfe\\eclipse\\img"), extensions, false);
 			HashMap<String, FormTemplate> filledForms = new HashMap<>();
 			while (fileIterator.hasNext()) {
 				File imageFile = (File) fileIterator.next();
@@ -87,8 +75,8 @@ public class FormScanner {
 
 			Date today = Calendar.getInstance().getTime();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-			File outputFile = new File(
-					args[1] + System.getProperty("file.separator") + "results_" + sdf.format(today) + ".csv");
+			File outputFile = new File("D:\\pfe\\eclipse\\img" + System.getProperty("file.separator") + "results_"
+					+ sdf.format(today) + ".csv");
 			fileUtils.saveCsvAs(outputFile, filledForms, false);
 			System.exit(0);
 		}
